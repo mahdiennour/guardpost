@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Status</title>
+<style>
+  body {
+    margin: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    background: #0b0d12; color: #e8eaed; display: flex; justify-content: center; padding: 60px 20px;
+  }
+  .card { max-width: 500px; width: 100%; }
+  .status-line { display: flex; align-items: center; gap: 10px; font-size: 20px; font-weight: 600; }
+  .dot { width: 12px; height: 12px; border-radius: 50%; }
+  .dot.up { background: #3ecf8e; box-shadow: 0 0 10px #3ecf8e; }
+  .dot.down { background: #ef5b5b; box-shadow: 0 0 10px #ef5b5b; }
+  .domain { color: #8b92a5; font-size: 14px; margin-top: 4px; }
+  .history { display: flex; gap: 2px; margin-top: 28px; }
+  .bar { flex: 1; height: 32px; border-radius: 2px; background: #232733; }
+  .bar.up { background: #3ecf8e; }
+  .bar.down { background: #ef5b5b; }
+  .history-label { display: flex; justify-content: space-between; color: #8b92a5; font-size: 12px; margin-top: 6px; }
+  .footer { margin-top: 40px; text-align: center; color: #8b92a5; font-size: 12px; }
+  .footer a { color: #5b8def; text-decoration: none; }
+</style>
+</head>
+<body>
+<div class="card" id="card">Loading…</div>
+
+<script>
+const slug = window.location.pathname.split('/').pop();
+
+async function load() {
+  const res = await fetch(`/api/status/${slug}`);
+  if (!res.ok) {
+    document.getElementById('card').innerHTML = '<p>Status page not found.</p>';
+    return;
+  }
+  const { site, history } = await res.json();
+  const isUp = site.is_up;
+
+  const bars = history.slice().reverse().map(h =>
+    `<div class="bar ${h.is_up ? 'up' : 'down'}" title="${h.checked_at}"></div>`
+  ).join('');
+
+  document.getElementById('card').innerHTML = `
+    <div class="status-line">
+      <div class="dot ${isUp ? 'up' : 'down'}"></div>
+      ${isUp ? 'All systems operational' : 'Service disruption'}
+    </div>
+    <div class="domain">${site.domain}</div>
+    <div class="history">${bars || ''}</div>
+    <div class="history-label"><span>Recent checks</span><span>Now</span></div>
+    <div class="footer">Monitored by <a href="/">GuardPost</a></div>
+  `;
+}
+load();
+setInterval(load, 30000);
+</script>
+</body>
+</html>

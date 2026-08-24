@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GuardPost — Uptime, SSL & Domain Monitoring</title>
+<style>
+  :root {
+    --bg: #0b0d12; --panel: #12151c; --border: #232733; --text: #e8eaed;
+    --muted: #8b92a5; --green: #3ecf8e; --red: #ef5b5b; --amber: #f0b429; --accent: #5b8def;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; background: var(--bg); color: var(--text); }
+  header { display: flex; justify-content: space-between; align-items: center; padding: 20px 32px; border-bottom: 1px solid var(--border); }
+  .logo { font-weight: 700; font-size: 18px; letter-spacing: -0.02em; }
+  .logo span { color: var(--green); }
+  .plan-badge { font-size: 12px; color: var(--muted); border: 1px solid var(--border); padding: 4px 10px; border-radius: 20px; }
+  main { max-width: 900px; margin: 0 auto; padding: 32px; }
+  .add-panel, .login-panel { background: var(--panel); border: 1px solid var(--border); border-radius: 12px; padding: 20px; margin-bottom: 28px; }
+  .add-panel h2, .login-panel h2 { margin: 0 0 4px; font-size: 16px; }
+  .add-panel p, .login-panel p { margin: 0 0 12px; color: var(--muted); font-size: 13px; }
+  textarea, input[type=email] {
+    width: 100%; background: #0d0f14; color: var(--text); border: 1px solid var(--border);
+    border-radius: 8px; padding: 10px; font-size: 14px; font-family: inherit;
+  }
+  textarea { min-height: 80px; font-family: monospace; resize: vertical; }
+  button { margin-top: 10px; background: var(--accent); color: white; border: none; padding: 9px 16px; border-radius: 8px; font-size: 14px; cursor: pointer; font-weight: 600; }
+  button:hover { opacity: 0.9; }
+  button.secondary { background: transparent; border: 1px solid var(--border); color: var(--text); }
+  button.danger { background: transparent; border: 1px solid var(--red); color: var(--red); }
+  .site-card { background: var(--panel); border: 1px solid var(--border); border-radius: 12px; padding: 16px 20px; margin-bottom: 12px; display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+  .site-left { display: flex; align-items: center; gap: 12px; }
+  .dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+  .dot.up { background: var(--green); box-shadow: 0 0 8px var(--green); }
+  .dot.down { background: var(--red); box-shadow: 0 0 8px var(--red); }
+  .dot.unknown { background: var(--muted); }
+  .site-meta { font-size: 13px; }
+  .site-meta .url { font-weight: 600; font-size: 14px; }
+  .site-meta .sub { color: var(--muted); margin-top: 2px; }
+  .badge { font-size: 11px; padding: 2px 8px; border-radius: 20px; border: 1px solid var(--border); margin-right: 4px; }
+  .badge.warn { color: var(--amber); border-color: var(--amber); }
+  .badge.crit { color: var(--red); border-color: var(--red); }
+  .badge.ok { color: var(--green); border-color: var(--green); }
+  .site-actions { display: flex; gap: 8px; align-items: center; font-size: 13px; color: var(--muted); }
+  .empty { text-align: center; color: var(--muted); padding: 60px 0; }
+  .limit-note { font-size: 12px; color: var(--muted); margin-top: 20px; text-align: center; }
+  .login-center { max-width: 380px; margin: 100px auto; text-align: center; }
+  .login-center .logo { font-size: 26px; margin-bottom: 8px; }
+  .login-center p { color: var(--muted); font-size: 14px; margin-bottom: 20px; }
+  .msg { font-size: 13px; margin-top: 10px; color: var(--green); }
+  .msg.error { color: var(--red); }
+  .hidden { display: none; }
+  .logout-link { color: var(--muted); font-size: 12px; cursor: pointer; text-decoration: underline; margin-left: 10px; }
+</style>
+</head>
+<body>
+<header>
+  <div class="logo">Guard<span>Post</span></div>
+  <div id="headerRight" class="plan-badge">…</div>
+</header>
+
+<main>
+  <!-- Logged out: login form -->
+  <div id="loginView" class="hidden">
+    <div class="login-center">
+      <div class="logo">Guard<span style="color:#3ecf8e">Post</span></div>
+      <p>Uptime, SSL & domain expiry monitoring for the sites you manage.</p>
+      <div class="login-panel">
+        <input type="email" id="emailInput" placeholder="you@agency.com">
+        <button onclick="requestLink()" style="width:100%">Send sign-in link</button>
+        <div id="loginMsg" class="msg"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Logged in: dashboard -->
+  <div id="dashboardView" class="hidden">
+    <div class="add-panel">
+      <h2>Add sites to monitor</h2>
+      <p>Paste one URL or domain per line. We'll check uptime every 5 minutes, SSL daily, domain expiry weekly.</p>
+      <textarea id="urlInput" placeholder="example.com&#10;https://client-site.com&#10;another-client.org"></textarea>
+      <br>
+      <button onclick="addSites()">Add & start monitoring</button>
+    </div>
+
+    <div id="siteList"></div>
+    <div class="limit-note" id="limitNote"></div>
+  </div>
+</main>
+
+<script>
+let currentUser = null;
+
+async function loadMe() {
+  const res = await fetch('/api/auth/me');
+  const data = await res.json();
+  currentUser = data.user;
+
+  const params = new URLSearchParams(window.location.search);
+  const authError = params.get('auth_error');
+
+  if (!currentUser) {
+    document.getElementById('loginView').classList.remove('hidden');
+    document.getElementById('dashboardView').classList.add('hidden');
+    document.getElementById('headerRight').textContent = 'Sign in';
+    if (authError) {
+      const messages = {
+        expired: 'That link expired - request a new one.',
+        already_used: 'That link was already used - request a new one.',
+        invalid_token: 'That link is invalid - request a new one.',
+      };
+      document.getElementById('loginMsg').textContent = messages[authError] || 'Something went wrong - try again.';
+      document.getElementById('loginMsg').classList.add('error');
+    }
+    return;
+  }
+
+  document.getElementById('loginView').classList.add('hidden');
+  document.getElementById('dashboardView').classList.remove('hidden');
+  document.getElementById('headerRight').innerHTML =
+    `${currentUser.plan.toUpperCase()} · ${data.used}/${data.limit} sites <span class="logout-link" onclick="doLogout()">sign out</span>`;
+  document.getElementById('limitNote').textContent =
+    data.used >= data.limit ? `You've hit the ${currentUser.plan} plan limit. Upgrade to add more sites.` : '';
+
+  loadSites();
+}
+
+async function requestLink() {
+  const email = document.getElementById('emailInput').value;
+  if (!email.includes('@')) return;
+  const res = await fetch('/api/auth/request-link', {
+    method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email })
+  });
+  const data = await res.json();
+  const msg = document.getElementById('loginMsg');
+  msg.classList.remove('error');
+  msg.textContent = data.message || 'Check your email for a sign-in link.';
+}
+
+async function doLogout() {
+  await fetch('/api/auth/logout', { method: 'POST' });
+  window.location.href = '/';
+}
+
+function daysBadge(days, kind) {
+  if (days === null || days === undefined) return '';
+  let cls = 'ok';
+  if (days <= 3) cls = 'crit'; else if (days <= 14) cls = 'warn';
+  return `<span class="badge ${cls}">${kind} expires in ${days}d</span>`;
+}
+
+function timeAgo(iso) {
+  const diff = Math.floor((Date.now() - new Date(iso + 'Z')) / 1000);
+  if (diff < 60) return diff + 's ago';
+  if (diff < 3600) return Math.floor(diff / 60) + 'm ago';
+  return Math.floor(diff / 3600) + 'h ago';
+}
+
+async function loadSites() {
+  const res = await fetch('/api/sites');
+  if (res.status === 401) return loadMe();
+  const sites = await res.json();
+  const list = document.getElementById('siteList');
+
+  if (sites.length === 0) {
+    list.innerHTML = '<div class="empty">No sites yet. Add your first one above.</div>';
+    return;
+  }
+
+  list.innerHTML = sites.map(site => {
+    const dotClass = site.is_up === null ? 'unknown' : site.is_up ? 'up' : 'down';
+    return `
+      <div class="site-card">
+        <div class="site-left">
+          <div class="dot ${dotClass}"></div>
+          <div class="site-meta">
+            <div class="url">${site.url}</div>
+            <div class="sub">
+              ${site.last_response_ms ? site.last_response_ms + 'ms · ' : ''}
+              ${site.last_check_at ? 'checked ' + timeAgo(site.last_check_at) : 'not checked yet'}
+            </div>
+            <div style="margin-top:6px;">
+              ${daysBadge(site.ssl_days_left, 'SSL')}
+              ${daysBadge(site.domain_days_left, 'Domain')}
+            </div>
+          </div>
+        </div>
+        <div class="site-actions">
+          <label style="display:flex;align-items:center;gap:4px;">
+            <input type="checkbox" ${site.public_status ? 'checked' : ''} onchange="togglePublic(${site.id}, this.checked)">
+            Public page
+          </label>
+          ${site.public_status ? `<a href="/status/${site.status_slug}" target="_blank" style="color:var(--accent)">view</a>` : ''}
+          <button class="secondary" onclick="checkNow(${site.id})">Check now</button>
+          <button class="danger" onclick="removeSite(${site.id})">Remove</button>
+        </div>
+      </div>
+    `;
+  }).join('');
+}
+
+async function addSites() {
+  const urls = document.getElementById('urlInput').value;
+  if (!urls.trim()) return;
+  const res = await fetch('/api/sites', {
+    method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ urls })
+  });
+  const result = await res.json();
+  if (result.skipped && result.skipped.length) {
+    alert('Some sites were skipped:\n' + result.skipped.map(s => `${s.url}: ${s.reason}`).join('\n'));
+  }
+  document.getElementById('urlInput').value = '';
+  await loadMe();
+}
+
+async function togglePublic(id, enabled) {
+  await fetch(`/api/sites/${id}/public-status`, {
+    method: 'PATCH', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ enabled })
+  });
+  loadSites();
+}
+
+async function checkNow(id) {
+  await fetch(`/api/sites/${id}/check-now`, { method: 'POST' });
+  loadSites();
+}
+
+async function removeSite(id) {
+  if (!confirm('Remove this site from monitoring?')) return;
+  await fetch(`/api/sites/${id}`, { method: 'DELETE' });
+  loadMe();
+}
+
+loadMe();
+setInterval(() => { if (currentUser) loadSites(); }, 15000);
+</script>
+</body>
+</html>
