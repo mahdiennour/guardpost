@@ -1,405 +1,459 @@
-# 🏋️ Hammamet Gym — Gym Membership & Management Platform
+# 🛡️ GuardPost — Server & SSL Security Monitor
 
 <p align="center">
-  <img src="https://img.shields.io/badge/Gym-Management-red?style=for-the-badge&logo=fitbit&logoColor=white"/>
-  <img src="https://img.shields.io/badge/Web-Application-blue?style=for-the-badge&logo=googlechrome&logoColor=white"/>
-  <img src="https://img.shields.io/badge/User-Friendly-Interface-success?style=for-the-badge"/>
+  <img src="https://img.shields.io/badge/GuardPost-Security%20Monitor-red?style=for-the-badge&logo=shield&logoColor=white"/>
+  <img src="https://img.shields.io/badge/SSL%2FTLS-Monitoring-blue?style=for-the-badge&logo=letsencrypt&logoColor=white"/>
+  <img src="https://img.shields.io/badge/Network-Monitoring-green?style=for-the-badge&logo=cloudflare&logoColor=white"/>
 </p>
 
 <p align="center">
-  <strong>🏋️ A modern web platform designed to make gym membership management simple, accessible, and convenient.</strong>
+  <strong>🔐 Monitor your SSL certificates. 🌐 Test your servers. 📊 Keep your infrastructure healthy.</strong>
 </p>
 
 ---
 
 ## 📖 Overview
 
-**Hammamet Gym** is a web-based platform designed to provide gym members with a **simple and intuitive way to manage their memberships remotely**.
+**GuardPost** is a security and network monitoring application designed to help users quickly verify the **security status, validity, and availability of their servers and web services**.
 
-Instead of requiring users to visit the gym for every administrative operation, the platform allows them to access important gym services **directly from home**.
+The application provides users with useful information about **SSL/TLS certificates**, including certificate expiration, while also offering network diagnostic capabilities to evaluate the **connectivity and stability of a server**.
 
-Whether a user wants to **subscribe to the gym, renew an existing membership, check training schedules, or access other gym-related information**, everything is organized through a clear and easy-to-use interface.
+The goal of GuardPost is simple:
 
-🎯 **Main objective:**
-
-> Make gym membership management faster, easier, and more accessible for everyone.
+> 🛡️ **Give users a clear view of the health and security of their infrastructure from a single application.**
 
 ---
 
-## ✨ Key Features
+# ✨ Key Features
 
-### 📝 Membership Registration
+## 🔐 SSL/TLS Certificate Monitoring
 
-New users can easily start their gym journey from home.
+GuardPost allows users to inspect the SSL/TLS certificate associated with a server or website.
 
-✅ Simple registration process
-✅ Clear membership information
-✅ Easy-to-understand interface
-✅ No need to visit the gym just to start the registration process
+The application can provide information such as:
 
----
+* 🔒 SSL/TLS certificate status
+* 📅 Certificate expiration date
+* ⏳ Remaining validity period
+* ⚠️ Expiration warnings
+* 🌐 Certificate-related information
+* ✅ Validation status
 
-### 🔄 Membership Renewal
+This helps users identify certificates that are:
 
-Already a member?
+🟢 **Valid**
+🟡 **Approaching expiration**
+🔴 **Expired / Invalid**
 
-The platform allows users to **renew their membership remotely**.
-
-🔹 Check membership information
-🔹 Renew membership
-🔹 Reduce unnecessary visits to the gym
-🔹 Manage membership from anywhere
-
----
-
-### 🏋️ Training Schedule
-
-Users can easily access the gym's **training schedules**.
-
-📅 View available training times
-⏰ Check session schedules
-🏃 Plan workouts in advance
-📱 Access schedules through the web interface
-
----
-
-### 👤 User-Centered Interface
-
-The platform was designed with a strong focus on **simplicity and usability**.
-
-The goal is to make important information accessible without overwhelming the user.
-
-🎨 Clean interface
-🧭 Simple navigation
-📱 Easy access to important information
-⚡ Fast and straightforward user experience
-
----
-
-### 🏠 Manage Your Gym Membership From Home
-
-One of the main concepts behind the project is **remote accessibility**.
-
-Users don't necessarily need to physically go to the gym for basic membership operations.
+### Example
 
 ```text
-             🏠 USER AT HOME
-                    │
-                    ▼
-          🌐 HAMMAMET GYM PLATFORM
-                    │
-        ┌───────────┼───────────┐
-        ▼           ▼           ▼
-     📝 JOIN     🔄 RENEW    📅 SCHEDULE
-        │           │           │
-        └───────────┼───────────┘
-                    ▼
-             🏋️ GYM SERVICES
+🔐 SSL CERTIFICATE STATUS
+
+Domain:        example.com
+
+Status:        🟢 VALID
+
+Issued:        01/01/2026
+Expires:       01/01/2027
+
+Remaining:     123 days
+
+Certificate:   TLS
 ```
 
 ---
 
-# 🎯 Project Goals
+# 🌐 Server Connectivity & Stability
 
-The project focuses on improving the relationship between **gym members and gym services**.
+GuardPost also provides a network diagnostic feature that allows users to **ping a server** and evaluate its connectivity.
 
-### 🚀 Accessibility
+Users can monitor:
 
-Make gym services accessible remotely.
+📡 Server reachability
+⏱️ Response time
+📊 Latency
+🔄 Connectivity consistency
+❌ Packet loss / failed requests
+🟢 Server availability
 
-### ⚡ Efficiency
+This makes it easier to identify potential network or infrastructure problems.
 
-Reduce unnecessary administrative procedures.
+### Example
 
-### 🎨 User Experience
+```text
+🌐 SERVER MONITOR
 
-Provide a clear and intuitive interface.
+Server:        192.168.1.100
 
-### 📱 Convenience
+Status:        🟢 ONLINE
 
-Allow members to manage important gym-related operations from home.
+Packets Sent:  100
+Packets Recv:  100
 
-### 🏋️ Organization
+Packet Loss:   0%
 
-Make training schedules and membership information easier to access.
+Average Ping:  24 ms
+
+Stability:     🟢 STABLE
+```
 
 ---
 
-# 👥 Target Users
+# 📊 Infrastructure Health at a Glance
 
-The platform is designed primarily for:
+GuardPost brings different checks together into one interface.
 
-### 🆕 New Members
+```text
+                 🛡️ GUARDPOST
+                      │
+        ┌─────────────┴─────────────┐
+        │                           │
+        ▼                           ▼
+   🔐 SSL MONITOR              🌐 SERVER MONITOR
+        │                           │
+   ┌────┼────┐                ┌────┼────┐
+   ▼    ▼    ▼                ▼    ▼    ▼
+  SSL  DATE  EXPIRY          PING  LATENCY STABILITY
+   │    │    │                │    │       │
+   └────┴────┘                └────┴───────┘
+        │                           │
+        └─────────────┬─────────────┘
+                      ▼
+              📊 HEALTH STATUS
+```
 
-People who want to join the gym and obtain their membership without unnecessary administrative steps.
+---
 
-### 🔄 Existing Members
+# 🎯 Why GuardPost?
 
-Members who want to renew their subscriptions remotely.
+Modern applications depend heavily on **secure connections and reliable infrastructure**.
 
-### 🏃 Gym Clients
+A website can have a perfectly configured application while still experiencing problems such as:
 
-Users who need quick access to training times and other gym information.
+🔴 Expired SSL certificate
+🟡 Certificate approaching expiration
+🔴 Server unreachable
+🟡 High latency
+🔴 Unstable connectivity
+🔴 Network interruptions
+
+GuardPost provides a simple way to detect these problems before they become bigger issues.
+
+---
+
+# 🚨 Monitoring Philosophy
+
+GuardPost focuses on two important aspects of infrastructure health:
+
+### 🔐 Security
+
+> **Is the connection secure and is the SSL/TLS certificate still valid?**
+
+### 🌐 Availability
+
+> **Is the server reachable and responding consistently?**
+
+Together:
+
+```text
+             🔐 SECURITY
+                  +
+             🌐 AVAILABILITY
+                  │
+                  ▼
+          🛡️ INFRASTRUCTURE
+              HEALTH
+```
 
 ---
 
 # 🖥️ User Experience
 
-The platform follows a simple workflow:
+The application is designed around a **simple and clear interface**.
 
-```text
-                👤 USER
-                  │
-                  ▼
-          🌐 ACCESS WEBSITE
-                  │
-                  ▼
-          🏠 MAIN INTERFACE
-                  │
-        ┌─────────┼─────────┐
-        │         │         │
-        ▼         ▼         ▼
-     📝 JOIN   🔄 RENEW   📅 SCHEDULE
-        │         │         │
-        └─────────┼─────────┘
-                  ▼
-             ✅ DONE
-```
+The user should be able to:
 
-The objective is to keep the number of steps minimal and make each action easy to understand.
+1. 🌐 Enter a server or domain
+2. 🔍 Start a security/network check
+3. 📊 View the results
+4. ⚠️ Identify potential problems
+5. 🛠️ Take appropriate action
+
+The objective is to avoid unnecessary complexity and present technical information in a way that is easy to understand.
 
 ---
 
-# 🧩 Main Modules
+# 📋 Monitoring Dashboard
 
-| Module                | Description                                |
-| --------------------- | ------------------------------------------ |
-| 📝 **Membership**     | Register for a gym membership              |
-| 🔄 **Renewal**        | Renew an existing membership               |
-| 📅 **Schedule**       | View training times and schedules          |
-| 👤 **User Interface** | Simple navigation and information access   |
-| 🏋️ **Gym Services**  | Centralized access to gym-related features |
+A possible GuardPost dashboard can provide a quick overview:
 
----
-
-# 💡 Why This Project?
-
-Traditional gym membership management can require users to physically visit the gym for simple administrative operations.
-
-Hammamet Gym aims to modernize this experience by bringing these services online.
-
-### Traditional Approach
-
-```text
-👤 Member
-   │
-   ▼
-🚗 Travel to Gym
-   │
-   ▼
-🏋️ Gym Reception
-   │
-   ▼
-📝 Membership Operation
-```
-
-### Hammamet Gym
-
-```text
-👤 Member
-   │
-   ▼
-💻 Website
-   │
-   ├── 📝 Membership
-   ├── 🔄 Renewal
-   └── 📅 Schedule
-```
-
-🚀 **Less friction. More convenience. Better accessibility.**
+| Check              | Status    | Information        |
+| ------------------ | --------- | ------------------ |
+| 🔐 SSL Certificate | 🟢 Valid  | 123 days remaining |
+| 📅 Expiration      | 🟢 Safe   | 01/01/2027         |
+| 🌐 Server          | 🟢 Online | Responding         |
+| 📡 Connectivity    | 🟢 Stable | 0% packet loss     |
+| ⏱️ Latency         | 🟢 Good   | 24 ms              |
 
 ---
 
-# 🛠️ Technologies
+# 🧰 Technology
 
-> Add the technologies you actually used in this project.
-
-For example:
-
-```text
-Frontend
-├── HTML
-├── CSS
-└── JavaScript
-
-Backend
-├── PHP / Node.js / Spring Boot
-└── REST API
-
-Database
-└── MySQL / PostgreSQL
-
-Tools
-├── Git
-└── GitHub
-```
-
-### 💻 Suggested Technology Badges
+> Replace these badges with the technologies actually used in the project.
 
 <p>
-<img src="https://skillicons.dev/icons?i=html,css,js,php,mysql,git,github"/>
+<img src="https://skillicons.dev/icons?i=python,java,cpp,c,linux,git,github"/>
 </p>
+
+### 🔧 Core Concepts
+
+* 🔐 SSL/TLS certificate validation
+* 🌐 Network connectivity testing
+* 📡 ICMP / server ping monitoring
+* ⏱️ Latency measurement
+* 📊 Infrastructure status monitoring
+* 🖥️ User interface development
+* ⚠️ Status & alert management
+
+---
+
+# 🏗️ Architecture
+
+```text
+                         👤 USER
+                           │
+                           ▼
+                  🖥️ GUARDPOST UI
+                           │
+              ┌────────────┴────────────┐
+              │                         │
+              ▼                         ▼
+       🔐 SSL MODULE              🌐 NETWORK MODULE
+              │                         │
+              ▼                         ▼
+       SSL/TLS HANDSHAKE          SERVER REQUEST
+              │                         │
+              ▼                         ▼
+       📅 CERTIFICATE DATA          📡 PING DATA
+              │                         │
+              └────────────┬────────────┘
+                           ▼
+                    📊 ANALYSIS ENGINE
+                           │
+                           ▼
+                    🟢 STATUS / ALERT
+```
+
+---
+
+# 🔎 Example Use Cases
+
+### 👨‍💻 System Administrators
+
+Quickly verify whether servers are reachable and certificates are still valid.
+
+### 🛡️ Cybersecurity Professionals
+
+Monitor basic security indicators related to SSL/TLS certificates and infrastructure availability.
+
+### 🌐 Web Developers
+
+Check whether a deployed website has a valid certificate and whether the server is responding correctly.
+
+### 🏢 IT Teams
+
+Perform quick infrastructure health checks without relying on multiple tools.
+
+---
+
+# 🚀 Future Improvements
+
+GuardPost can be extended into a more complete infrastructure monitoring platform.
+
+### 🔔 Smart Alerts
+
+* 📧 Email notifications
+* 📱 Push notifications
+* 💬 Discord notifications
+* 🚨 Certificate expiration alerts
+
+### 📊 Advanced Monitoring
+
+* 📈 Latency history
+* 📉 Packet-loss statistics
+* 📅 Historical uptime
+* 📊 Server performance dashboards
+
+### 🔐 Advanced SSL Analysis
+
+* Certificate chain analysis
+* TLS version detection
+* Cipher-suite information
+* Certificate issuer information
+* Domain/SAN inspection
+* Automatic expiration alerts
+
+### 🌐 Infrastructure Monitoring
+
+* Multiple server monitoring
+* Port availability checks
+* HTTP/HTTPS status monitoring
+* DNS monitoring
+* Uptime monitoring
+
+---
+
+# 🧪 Example Workflow
+
+```text
+1️⃣ Enter Domain / Server
+          │
+          ▼
+2️⃣ GuardPost Performs Checks
+          │
+     ┌────┴────┐
+     ▼         ▼
+  🔐 SSL     🌐 PING
+  Check      Check
+     │         │
+     └────┬────┘
+          ▼
+3️⃣ Analyze Results
+          │
+          ▼
+4️⃣ Generate Status
+          │
+          ▼
+   🟢 Healthy
+   🟡 Warning
+   🔴 Critical
+```
 
 ---
 
 # 📸 Screenshots
 
-Add screenshots of your application here to demonstrate the interface.
+Add screenshots of your application here.
 
-### 🏠 Home Page
-
-> Add your screenshot here.
+### 🏠 Main Dashboard
 
 ```text
-📷 /screenshots/home.png
+📷 screenshots/dashboard.png
 ```
 
-### 📝 Membership Page
-
-> Add your screenshot here.
+### 🔐 SSL Certificate Monitor
 
 ```text
-📷 /screenshots/membership.png
+📷 screenshots/ssl-monitor.png
 ```
 
-### 📅 Training Schedule
-
-> Add your screenshot here.
+### 🌐 Server Stability Monitor
 
 ```text
-📷 /screenshots/schedule.png
+📷 screenshots/server-monitor.png
 ```
 
 ---
 
-# 🚀 Installation & Setup
+# 🚀 Installation
 
 Clone the repository:
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/hammamet-gym.git
+git clone https://github.com/YOUR_USERNAME/guardpost.git
 ```
 
-Navigate to the project:
+Enter the project:
 
 ```bash
-cd hammamet-gym
+cd guardpost
 ```
 
-Then follow the project-specific setup instructions.
+Install the required dependencies according to the project's technology stack.
 
-> ⚠️ Update this section depending on your actual backend, database, and deployment configuration.
+Run the application:
+
+```bash
+# Add your project-specific command here
+```
 
 ---
 
 # 📂 Project Structure
 
-Example structure:
+Example:
 
 ```text
-hammamet-gym/
+guardpost/
+│
+├── 📁 src/
+│   ├── 🔐 ssl/
+│   ├── 🌐 network/
+│   ├── 📊 monitoring/
+│   └── 🖥️ ui/
 │
 ├── 📁 assets/
-│   ├── 📁 css/
-│   ├── 📁 js/
-│   └── 📁 images/
 │
-├── 📁 pages/
-│   ├── 🏠 home
-│   ├── 📝 membership
-│   ├── 🔄 renewal
-│   └── 📅 schedule
+├── 📁 tests/
 │
-├── 📁 database/
-│
-├── 📁 components/
-│
-├── 📄 index
-└── 📄 README.md
+├── 📄 README.md
+└── 📄 requirements.txt
 ```
 
 ---
 
-# 🔐 Security & Future Improvements
+# 🔐 Security Considerations
 
-Potential future improvements include:
+GuardPost is designed as a **monitoring and diagnostic tool**.
 
-🔐 Secure authentication
-👤 Personal user accounts
-💳 Online payment integration
-📧 Email notifications
-📱 Mobile application
-🔔 Membership expiration notifications
-📊 Gym administration dashboard
-📈 Membership analytics
-🗓️ Online training/session booking
-🔒 Advanced access control
+The application should follow security best practices such as:
+
+* 🔒 Secure handling of user input
+* 🛡️ Safe network requests
+* 🚫 Avoiding unnecessary privileged operations
+* 🔐 Protecting sensitive configuration
+* 🧹 Validating and sanitizing input
+* 📋 Maintaining clear logs
 
 ---
 
-# 🌟 Future Vision
+# 📚 What This Project Demonstrates
 
-The long-term vision is to transform **Hammamet Gym** into a complete digital ecosystem for gym members and administrators.
+GuardPost demonstrates practical knowledge in:
 
-```text
-                 🏋️ HAMMAMET GYM
-                        │
-          ┌─────────────┼─────────────┐
-          ▼             ▼             ▼
-       👤 USERS      🏢 ADMIN       📱 MOBILE
-          │             │             │
-          ▼             ▼             ▼
-      Membership    Management      Anywhere
-      Renewal       Analytics       Access
-      Schedule      Members         Notifications
-          │             │             │
-          └─────────────┼─────────────┘
-                        ▼
-                🚀 DIGITAL GYM
-```
-
----
-
-# 📚 What I Learned
-
-Through this project, I worked on concepts related to:
-
-* 🎨 User Interface Design
-* 🧠 User Experience
-* 🌐 Web Application Development
-* 🗄️ Data Management
-* 🔐 Application Security
-* 📱 Responsive Design
-* 🧩 Software Architecture
-* 🚀 Digital Service Development
+* 🔐 Cybersecurity
+* 🌐 Network security
+* 📡 Network diagnostics
+* 🔒 SSL/TLS
+* 🖥️ Application development
+* 📊 Monitoring systems
+* ⚙️ Automation
+* 🧠 Problem solving
 
 ---
 
 # 🤝 Contributing
 
-Contributions, ideas, and suggestions are welcome!
+Contributions are welcome!
 
-1. 🍴 Fork the repository
-2. 🌿 Create a new branch
-3. 💻 Make your changes
-4. 🧪 Test your changes
-5. 📤 Create a Pull Request
+```text
+🍴 Fork
+   ↓
+🌿 Create a Branch
+   ↓
+💻 Make Changes
+   ↓
+🧪 Test
+   ↓
+📤 Pull Request
+```
 
 ---
 
 # 📬 Contact
 
-If you have questions, suggestions, or would like to discuss the project, feel free to reach out.
+Feel free to connect with me if you are interested in cybersecurity, software engineering, network security, or infrastructure monitoring.
 
 <p align="center">
 
@@ -407,14 +461,20 @@ If you have questions, suggestions, or would like to discuss the project, feel f
 <img src="https://img.shields.io/badge/GitHub-Profile-black?style=for-the-badge&logo=github"/>
 </a>
 
+<a href="https://www.linkedin.com/in/mahdi-ennour">
+<img src="https://img.shields.io/badge/LinkedIn-Connect-blue?style=for-the-badge&logo=linkedin"/>
+</a>
+
 </p>
 
 ---
 
 <p align="center">
-  🏋️ <strong>Hammamet Gym</strong> — Making gym management simpler, one click at a time. 🚀
+
+🛡️ **GuardPost** <strong>Know your infrastructure. Secure your connections. Monitor your servers.</strong>
+
 </p>
 
 <p align="center">
-  ⭐ If you like this project, don't forget to give it a star!
+⭐ If you find this project useful, consider giving it a star!
 </p>
